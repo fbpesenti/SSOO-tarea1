@@ -60,6 +60,8 @@ int main(int argc, char const *argv[])
         sleep(tiempo_creacion);
         id_repartidor = fork();
         if (id_repartidor == 0){
+          char *argv[] = {"repartidor", "dfsf", NULL};
+          execv("./repartidor", argv);
           printf("REPARTIDOR: Hola naci PID: %i\n", getpid());
         }      
 
