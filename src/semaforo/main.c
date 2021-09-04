@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 
-int main(char const *argv[])
+int main(int argc, char const *argv[])
 {
   printf("I'm the SEMAFORO process and my PID is: %i\n", getpid());
   //printf("creare un semaforo\n");
