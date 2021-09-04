@@ -70,6 +70,9 @@ int main(int argc, char const *argv[])
 
   if (id_semaforo == 0){ ///proceso hijo SEMAFORO
     printf("SEMAFORO: soy un semaforo PID: %i\n", getpid());
+    char *argv2[] = {"main", "dfsf", NULL};
+    execv("../semaforo/main", argv2);
+    printf("probando 123 \n");
   };
 
 
