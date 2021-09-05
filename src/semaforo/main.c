@@ -2,12 +2,15 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include<signal.h>
+#include <stdbool.h>
+
+int id_proceso_fabrica;
 
 void sig_handler(int signum){
  
   printf("CAMBIO COLOR\n");
   printf(" %i signum\n", signum);
-  send_signal_with_int();
+  send_signal_with_int(id_proceso_fabrica);
 }
 
 
@@ -20,10 +23,12 @@ int main(int argc, char const *argv[])
   signal(SIGALRM,sig_handler); // Register signal handler
   int delay = atoi(argv[2]);
   printf("%i de dealy\n", delay);
+  id_proceso_fabrica = atoi(argv[3]);
   
   alarm(delay); 
   printf("a con %i\n", delay);
-  sleep(delay+1);
+  while (true)
+      ;
     //sleep(delay);
   
   
