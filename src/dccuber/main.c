@@ -1,7 +1,20 @@
 #include <stdio.h>
 #include <unistd.h>
-
+#include <stdlib.h>
+#include <string.h>
 #include "../file_manager/manager.h"
+
+// void handle_sigint(int sig)
+// {
+//   printf("Gracefully finishing\n");
+//   //
+
+//   // Terminamos el programa con exit code 0
+//   exit(0);
+// }
+
+
+
 
 int main(int argc, char const *argv[])
 {
@@ -9,7 +22,7 @@ int main(int argc, char const *argv[])
 
   char *filename = "input.txt";
   InputFile *data_in = read_file(filename);
-  char* distancia[4]; //flo
+  int distancia[4]; //flo
   printf("Leyendo el archivo %s...\n", filename);
   printf("- Lineas en archivo: %i\n", data_in->len);
   printf("- Contenido del archivo:\n");
@@ -18,7 +31,7 @@ int main(int argc, char const *argv[])
   for (int i = 0; i < 4; i++)
   {
     printf("%s, ", data_in->lines[0][i]);
-    distancia[i] = data_in->lines[0][i]; //flo
+    distancia[i] = atoi(data_in->lines[0][i]); //flo
   }
   printf("\n");
 
@@ -29,12 +42,12 @@ int main(int argc, char const *argv[])
   }
   printf("\n");
   printf("VARIABLES\n");
-  int tiempo_creacion;
-  int envios_necesarios;
+  int tiempo_creacion = atoi(data_in->lines[1][0]);
+  int envios_necesarios = atoi(data_in->lines[1][1]);
+  int tiempo_1 = atoi(data_in->lines[1][2]);
+  int tiempo_2 = atoi(data_in->lines[1][3]);
+  int tiempo_3 = atoi(data_in->lines[1][4]);
   int envios_completados;
-  // tiempo_creacion = data_in->lines[0][0];
-  tiempo_creacion = 1;
-  envios_necesarios = 3; 
   envios_completados = 0;
   printf("tiempo creacion %i\n", tiempo_creacion);
   printf("\n");
@@ -44,7 +57,7 @@ int main(int argc, char const *argv[])
   int id_semaforo;
   int id_semaforo1;
   int id_semaforo2;
-  int a = 0;
+  // int a = 0;
   
   id_semaforo = fork(); 
 
@@ -78,7 +91,7 @@ int main(int argc, char const *argv[])
       if (envios_completados < envios_necesarios){
         int id_repartidor;
         printf("me demoro %i segundos en crear un repartidor.....\n", tiempo_creacion);
-        sleep(tiempo_creacion);
+        sleep(tiempo_creacion);  // Creo que deberia ser un alarm alarm(tiempo_creacion)
         id_repartidor = fork();
         if (id_repartidor == 0){
           char *argv[] = {"repartidor", "dfsf", NULL};
