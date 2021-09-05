@@ -22,7 +22,7 @@ int main(int argc, char const *argv[])
 
   char *filename = "input.txt";
   InputFile *data_in = read_file(filename);
-  int distancia[4]; //flo
+  char *distancia[4]; //flo
   printf("Leyendo el archivo %s...\n", filename);
   printf("- Lineas en archivo: %i\n", data_in->len);
   printf("- Contenido del archivo:\n");
@@ -31,7 +31,7 @@ int main(int argc, char const *argv[])
   for (int i = 0; i < 4; i++)
   {
     printf("%s, ", data_in->lines[0][i]);
-    distancia[i] = atoi(data_in->lines[0][i]); //flo
+    distancia[i] = data_in->lines[0][i]; //flo
   }
   printf("\n");
 
