@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../file_manager/manager.h"
+#include <stdbool.h>
 
 // void handle_sigint(int sig)
 // {
@@ -111,7 +112,10 @@ int main(int argc, char const *argv[])
   if (id_fabrica == 0){ ///proceso hijo FABRICA
       printf("FABRICA: soy una fabrica PID: %i\n", getpid());
       //ACA SE RECIBE SEÑAL SEMAFORO
+      printf("Ahora voy a cnectar\n");
       connect_sigaction(SIGUSR1, hander_test);
+      while (true)
+      ;
       //ACA SE CREAN LOS REPARTIDORES
       if (envios_completados < envios_necesarios){
         int id_repartidor;

@@ -3,12 +3,14 @@
 #include <stdlib.h>
 #include<signal.h>
 #include <stdbool.h>
+#include "../file_manager/manager.h"
 
 int id_proceso_fabrica;
 
 void sig_handler(int signum){
  
   printf("CAMBIO COLOR\n");
+  printf("mando al proceso %i \n", id_proceso_fabrica);
   send_signal_with_int(id_proceso_fabrica, 0);
 }
 
