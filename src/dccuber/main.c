@@ -136,7 +136,7 @@ int main(int argc, char const *argv[])
           // sprintf(str3, "%d",id_semaforo3);
 
           printf("Ahora voy a cnectar al repartidor\n");
-          char *argv[] = {"repartidor",  distancia[0], distancia[1], distancia[2], distancia[3], distancia[4], NULL};
+          char *argv[] = {"repartidor", distancia[0], distancia[1], distancia[2], NULL};
           execv("./repartidor", argv);
           printf("REPARTIDOR: Hola naci PID: %i\n", getpid());
         }      

@@ -18,9 +18,6 @@ void handler_states(int sig, siginfo_t *siginfo, void *ucontext){
   printf("Recibi %i\n", valor_recibido);
   printf("aca debe estar sender: %i\n", siginfo->si_pid);
 }
-void repartidor_avanza(int signum){
-  printf("Se gatillo repartidor avanza*****************");
-}
 
 //Esta funcion crea el output para el repartidor
 void output_file(int tiempo_semaforo1, int tiempo_semaforo2,int tiempo_semaforo3, int turnos_bodega, char* repartidor_name){
@@ -34,7 +31,8 @@ void output_file(int tiempo_semaforo1, int tiempo_semaforo2,int tiempo_semaforo3
 // debo recibir distancias 
 int main(int argc, char const *argv[])
 {
-  printf("LLEGOOO BIEN distancia 1: %s; %s, %s", argv[1], argv[2], argv[3]);
+  printf("*****************************");
+  printf("LLEGOOO BIEN distancia 1: %s", argv[1]);
   connect_sigaction(SIGUSR1, handler_states);
 
   signal(SIGALRM,repartidor_avanza);
