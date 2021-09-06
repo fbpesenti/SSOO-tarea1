@@ -1,7 +1,12 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
-
+//Esta funcion crea el output para el semaforo
+void output_file(int cantidad_cambios, char* nombre_archivo){
+  FILE *output_file = fopen(nombre_archivo, "w");
+  fprintf(output_file, "%i", cantidad_cambios);
+  fclose(output_file);
+}
 
 int main(int argc, char const *argv[])
 {

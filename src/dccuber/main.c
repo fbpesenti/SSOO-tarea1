@@ -2,19 +2,17 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include "../file_manager/manager.h"
 
-// void handle_sigint(int sig)
-// {
-//   printf("Gracefully finishing\n");
-//   //
+int id_proceso_rep;
 
-//   // Terminamos el programa con exit code 0
-//   exit(0);
-// }
-
-
-
+void sig_handler_rep(int signum){
+ 
+  printf("Crear repartidor\n");
+  printf(" %i signum\n", signum);
+  send_signal_with_int(id_proceso_rep, signum);
+}
 
 int main(int argc, char const *argv[])
 {
@@ -90,14 +88,19 @@ int main(int argc, char const *argv[])
       //ACA SE CREAN LOS REPARTIDORES
       if (envios_completados < envios_necesarios){
         int id_repartidor;
+        signal(SIGALRM,sig_handler_rep);
         printf("me demoro %i segundos en crear un repartidor.....\n", tiempo_creacion);
-        sleep(tiempo_creacion);  // Creo que deberia ser un alarm alarm(tiempo_creacion)
-        id_repartidor = fork();
-        if (id_repartidor == 0){
-          char *argv[] = {"repartidor", "dfsf", NULL};
-          execv("./repartidor", argv);
-          printf("REPARTIDOR: Hola naci PID: %i\n", getpid());
-        }      
+        alarm(tiempo_creacion);  // Creo que deberia ser un alarm alarm(tiempo_creacion)
+        // id_repartidor = fork();
+        // if (id_repartidor == 0){
+        //   char *argv[] = {"repartidor", "dfsf", NULL};
+        //   execv("./repartidor", argv);
+        //   printf("REPARTIDOR: Hola naci PID: %i\n", getpid());
+        // } 
+        while (true)
+        {
+        };
+        
       }
     };
     
