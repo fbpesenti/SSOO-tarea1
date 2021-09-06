@@ -96,6 +96,7 @@ void input_file_destroy(InputFile *input_file)
 */
 void connect_sigaction(int sig, void (*handler)(int, siginfo_t *, void *))
 {
+  printf("entro a conect con sig %i\n", sig);
   // Define the sigaction struct required to setup the handler
   struct sigaction action;
 
@@ -121,6 +122,7 @@ void connect_sigaction(int sig, void (*handler)(int, siginfo_t *, void *))
 */
 void send_signal_with_int(int pid, int payload)
 {
+  printf("entro a send con pid %i\n", pid);
   union sigval sig = {};
   sig.sival_int = payload;
   sigqueue(pid, SIGUSR1, sig);
