@@ -13,7 +13,10 @@ void handler_states(int sig, siginfo_t *siginfo, void *ucontext){
 
 int main(int argc, char const *argv[])
 {
+  connect_sigaction(SIGUSR1, handler_states);
   printf("I'm the REPARTIDOR process and my PID is: %i\n", getpid());
   int velocidad = 1;
-  connect_sigaction(SIGUSR1, handler_states);
+  while (true)
+    ;
+  //connect_sigaction(SIGUSR1, handler_states);
 }

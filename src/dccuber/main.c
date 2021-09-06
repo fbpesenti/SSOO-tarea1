@@ -21,6 +21,8 @@ void hander_test(int sig, siginfo_t *siginfo, void *ucontext){
   printf("Recibi %i\n", valor_recibido);
   printf("aca debe estar sender: %i\n", siginfo->si_pid);
   printf("se manda a este repartidor id: %i\n", id_repartidor);
+  if (siginfo->si_pid == id_semaforo1){}
+  if (siginfo)
   send_signal_with_int(id_repartidor, siginfo->si_pid);
 }
 
