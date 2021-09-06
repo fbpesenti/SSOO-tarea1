@@ -13,12 +13,15 @@
 //   // Terminamos el programa con exit code 0
 //   exit(0);
 // }
-
+int id_repartidor;
 
 void hander_test(int sig, siginfo_t *siginfo, void *ucontext){
   printf("ENTRO//\n");
   int valor_recibido = siginfo-> si_value.sival_int;
   printf("Recibi %i\n", valor_recibido);
+  printf("aca debe estar sender: %i\n", siginfo->si_pid);
+  printf("se manda a este repartidor id: %i\n", id_repartidor);
+  send_signal_with_int(id_repartidor, siginfo->si_pid);
 }
 
 int main(int argc, char const *argv[])
@@ -114,20 +117,24 @@ int main(int argc, char const *argv[])
       //ACA SE RECIBE SEÑAL SEMAFORO
       printf("Ahora voy a cnectar\n");
       connect_sigaction(SIGUSR1, hander_test);
-      while (true)
-      ;
+      //while (true)
+      //;
       //ACA SE CREAN LOS REPARTIDORES
       if (envios_completados < envios_necesarios){
-        int id_repartidor;
+        //int id_repartidor;
         printf("me demoro %i segundos en crear un repartidor.....\n", tiempo_creacion);
         sleep(tiempo_creacion);  // Creo que deberia ser un alarm alarm(tiempo_creacion)
         id_repartidor = fork();
         if (id_repartidor == 0){
+          printf("Ahora voy a cnectar al repartidor\n");
           char *argv[] = {"repartidor", "dfsf", NULL};
           execv("./repartidor", argv);
           printf("REPARTIDOR: Hola naci PID: %i\n", getpid());
+          
         }      
       }
+      while (true)
+      ;
     };
 //####################################3
   printf("Liberando memoria...PID: %i\n", getpid());
