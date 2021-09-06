@@ -34,7 +34,7 @@ void output_file(int tiempo_semaforo1, int tiempo_semaforo2,int tiempo_semaforo3
 // debo recibir distancias 
 int main(int argc, char const *argv[])
 {
-  printf("LLEGOOO BIEN distancia 1: %s; %s, %s, %s,%s", argv[5], argv[6], argv[7]);
+  printf("LLEGOOO BIEN distancia 1: %s; %s, %s", argv[1], argv[2], argv[3]);
   connect_sigaction(SIGUSR1, handler_states);
 
   signal(SIGALRM,repartidor_avanza);
