@@ -9,8 +9,7 @@ int id_proceso_fabrica;
 void sig_handler(int signum){
  
   printf("CAMBIO COLOR\n");
-  printf(" %i signum\n", signum);
-  send_signal_with_int(id_proceso_fabrica);
+  send_signal_with_int(id_proceso_fabrica, 0);
 }
 
 
@@ -26,7 +25,6 @@ int main(int argc, char const *argv[])
   id_proceso_fabrica = atoi(argv[3]);
   
   alarm(delay); 
-  printf("a con %i\n", delay);
   while (true)
       ;
     //sleep(delay);

@@ -17,6 +17,7 @@
 void hander_test(int sig, siginfo_t *siginfo, void *ucontext){
   printf("ENTRO//\n");
   int valor_recibido = siginfo-> si_value.sival_int;
+  printf("Recibi %i\n", valor_recibido);
 }
 
 int main(int argc, char const *argv[])
