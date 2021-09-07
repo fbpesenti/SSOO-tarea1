@@ -50,22 +50,20 @@ void output_file(int tiempo_semaforo1, int tiempo_semaforo2,int tiempo_semaforo3
 void repartidor_avanza(int signum){
   printf("*********\n");
   printf("LLegue a la alarma\n");
-  if(distancia==(distancia_semaforo_1-1)){
+  if(distancia==(distancia_semaforo_1-1)&& distancia>0){
     if(estado_semaforo[0]==0){
-      printf("**************Avanza*************\n");
       distancia++;
       turnos[0]++;
       turnos[1]++;
       turnos[2]++;
       turnos[3]++;
-      printf("------------DIstancia despues de pasar el semaforo: %i---------\n", distancia);
     }
     else{
-      printf("**************Se Frena*********************\n");
       turnos[0]++;
       turnos[1]++;
       turnos[2]++;
       turnos[3]++;
+      
     }
   }
   else if(distancia==(distancia_semaforo_2-1)){
@@ -94,48 +92,41 @@ void repartidor_avanza(int signum){
   }
   else if(distancia==(distancia_bodega-1)){
       turnos[3]++;
+      distancia++;
   }
   // aca termina el proceso y se escirbe el archi 
   // CACHAR como escribir el Nombre de)l repartidor con su identificador del o al numero de envios
   else if(distancia==(distancia_bodega)){
-    output_file(turnos[0], turnos[1], turnos[2], turnos[3], "repartidor_.txt");
+    //output_file(turnos[0], turnos[1], turnos[2], turnos[3], "repartidor_.txt");
+    printf("**************Se Termino llego a bodega*********************\n");
     ///TERMINAR EL PROCESO
-    
   }
 
   else{
-    printf("###########Llegue al Else#######\n");
-    printf("-----------------Distancia: %i----------------------------\n", distancia);
     if (distancia<(distancia_semaforo_1)){
-      printf("**************Avanza*************");
       distancia++;
       turnos[0]++;
       turnos[1]++;
       turnos[2]++;
       turnos[3]++;
-      printf("-----------------Distancia despues de avanzar: %i----------------------------\n", distancia);
     }
     else if (distancia<(distancia_semaforo_2-1)){
-      printf("**************Avanza*************\n");
       turnos[1]++;
       turnos[2]++;
       turnos[3]++;
       distancia++;
     }
     else if (distancia<(distancia_semaforo_3-1)){
-      printf("**************Avanza*************\n");
       turnos[2]++;
       turnos[3]++;
       distancia++; 
-      printf("-----------------Distancia despues de avanzar: %i----------------------------\n", distancia);
     }
     else if (distancia<(distancia_bodega)){
-      printf("**************Avanza*************\n");
       turnos[3]++;
       distancia++;
-      printf("-----------------Distancia despues de avanzar: %i----------------------------\n", distancia);
     }
   }
+  printf("%i----------------------------\n", distancia);
   printf("##################Ternmino##################\n");
   alarm(velocidad);
 }
