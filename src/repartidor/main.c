@@ -81,7 +81,7 @@ void repartidor_avanza(int signum){
   printf("LLegue a la repartidor avanza\n");
   printf("distancia: %i: bodega: %i\n", distancia, distancia_bodega);
   if(distancia==(distancia_semaforo_1-1)){
-    printf("ESTOY FRENTE AL SEMAFORO 1\n");
+    printf("ESTOY FRENTE AL SEMAFORO 1 en estado %i\n", estado_semaforo[0]);
     if(estado_semaforo[0]==0){
       printf("CRUZE AL SEMAFORO\n");
       distancia++;
@@ -99,7 +99,7 @@ void repartidor_avanza(int signum){
     }
   }
   else if(distancia==(distancia_semaforo_2-1)){
-    printf("ESTOY FRENTE AL SEMAFORO 2\n");
+    printf("ESTOY FRENTE AL SEMAFORO 2 en estado %i\n", estado_semaforo[1]);
     if(estado_semaforo[1]==0){
       printf("CRUZE AL SEMAFORO\n");
       distancia++;
@@ -115,7 +115,7 @@ void repartidor_avanza(int signum){
     }
   }
   else if(distancia==(distancia_semaforo_3-1)){
-    printf("ESTOY FRENTE AL SEMAFORO 3\n");
+    printf("ESTOY FRENTE AL SEMAFORO 3 en estado %i\n", estado_semaforo[2]);
     if(estado_semaforo[2]==0){
       printf("CRUZE AL SEMAFORO\n");
       distancia++;
@@ -132,6 +132,19 @@ void repartidor_avanza(int signum){
     printf("ESTOY FRENTE A LA BODEGA\n");
       turnos[3]++;
       distancia++;
+      printf("---------------REPARTIDOR LLEGUE BODEGA-----------\n");
+      char repa[100];
+      sprintf(repa, "repartidor_%i.txt", id_repartidor);
+      //Aqui se crea el archivo
+      output_file(turnos[0], turnos[1], turnos[2], turnos[3], repa);
+      printf("LOS TURNOS FINALES SON: %i; %i;%i;%i\n", turnos[0], turnos[1], turnos[2], turnos[3]);
+      printf("---------------------vamos a terminar el proceso -----------------\n");
+      printf("---------------------ID REPARTiDOR%i -----------------\n", id_repartidor);
+      printf("---------------------Envios necesarios%i -----------------\n", envios_necesarios);
+      if(envios_necesarios-1==id_repartidor){
+        kill(getppid(), SIGINT);
+      }
+      ///TERMINAR EL PROCESO
   }
   // aca termina el proceso y se escirbe el archi 
   // CACHAR como escribir el Nombre de)l repartidor con su identificador del o al numero de envios
@@ -155,20 +168,20 @@ void repartidor_avanza(int signum){
   }
 
   else if(distancia<(distancia_semaforo_1-1)){
-    printf("AVANZO");
+    printf("AVANZO\n");
     turnos[1]++;
     turnos[2]++;
     turnos[3]++;
     distancia++;
   }
   else if (distancia<(distancia_semaforo_3-1)){
-    printf("AVANZO");
+    printf("AVANZO\n");
     turnos[2]++;
     turnos[3]++;
     distancia++; 
   }
   else if (distancia<(distancia_bodega)){
-    printf("AVANZO");
+    printf("AVANZO\n");
     turnos[3]++;
     distancia++;
   }

@@ -20,14 +20,18 @@ void output_file(int cantidad_cambios, char* nombre_archivo){
 }
 
 void sigabr_handler(int signum){ 
-  printf("SEMAFORO: Mira recibi SIGABRT  \n");
+  printf("SEMAFORO %i: Mira recibi SIGABRT  \n", my_id);
   //to do: escribir en archivo y finalizar
+  char repa[15];
+  sprintf(repa, "semaforo_%i.txt", my_id);
+  printf("---------------------Semaforo %i muere despues de %i cambios-----------------\n", my_id, cambios_color);
+  output_file(cambios_color, repa);
   printf("muere semaforo\n");
   kill(getpid(), SIGINT);
 }
 
 void sig_handler(int signum){ 
-  printf("SEMAFORO: CAMBIE DE COLOR %i\n", estado);
+  
   //printf("SEMAFORO: mando al proceso %i  desde proceso %i\n", id_proceso_fabrica, getpid());
   send_signal_with_int(id_proceso_fabrica, my_id);
   cambios_color++;
@@ -37,6 +41,7 @@ void sig_handler(int signum){
   else if (estado == 1){
     estado = 0;
   }
+  printf("SEMAFORO %i: CAMBIE DE COLOR %i\n", my_id, estado);
   alarm(delay_all);  
 }
 

@@ -34,7 +34,13 @@ void hander_test(int sig, siginfo_t *siginfo, void *ucontext){
   // printf("se manda a este repartidor id: %i\n", id_repartidor);
   int id_proceso_semaforo = siginfo->si_pid;
   // printf("$$$$############# %i --------------------\n", id_semaforo1);
-  send_signal_with_int(id_repartidor, valor_recibido);
+  for (int j = 0; j < envios_necesarios; j++){
+    if (array_prueba[j] != 0){
+      printf("FABRICA: mandando cambio semaforo a repartidores\n");
+      send_signal_with_int(array_prueba[j], valor_recibido);
+    }
+  }
+  //send_signal_with_int(id_repartidor, valor_recibido);
 }
 
 void handle_sigint_fabrica(int signum){
