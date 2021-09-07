@@ -78,92 +78,102 @@ void output_file(int tiempo_semaforo1, int tiempo_semaforo2,int tiempo_semaforo3
 }
 void repartidor_avanza(int signum){
   printf("*********\n");
-  printf("LLegue a la alarma\n");
+  printf("LLegue a la repartidor avanza\n");
+  printf("distancia: %i: bodega: %i\n", distancia, distancia_bodega);
   if(distancia==(distancia_semaforo_1-1)){
+    printf("ESTOY FRENTE AL SEMAFORO 1\n");
     if(estado_semaforo[0]==0){
+      printf("CRUZE AL SEMAFORO\n");
       distancia++;
       turnos[0]++;
       turnos[1]++;
       turnos[2]++;
       turnos[3]++;
     }
-    else{
+    else if(estado_semaforo[0]==1){
+      printf("PARE AL SEMAFORO\n");
       turnos[0]++;
       turnos[1]++;
       turnos[2]++;
-      turnos[3]++;
-      
+      turnos[3]++;      
     }
   }
   else if(distancia==(distancia_semaforo_2-1)){
+    printf("ESTOY FRENTE AL SEMAFORO 2\n");
     if(estado_semaforo[1]==0){
+      printf("CRUZE AL SEMAFORO\n");
       distancia++;
       turnos[1]++;
       turnos[2]++;
       turnos[3]++;
     }
-    else{
+    else if(estado_semaforo[1]==1){
+      printf("PARE AL SEMAFORO\n");
       turnos[1]++;
       turnos[2]++;
       turnos[3]++;
     }
   }
   else if(distancia==(distancia_semaforo_3-1)){
+    printf("ESTOY FRENTE AL SEMAFORO 3\n");
     if(estado_semaforo[2]==0){
+      printf("CRUZE AL SEMAFORO\n");
       distancia++;
       turnos[2]++;
       turnos[3]++;
     }
-    else{
+    else if(estado_semaforo[2]==1){
+      printf("PARE AL SEMAFORO \n");
       turnos[2]++;
       turnos[3]++;
     }
   }
   else if(distancia==(distancia_bodega-1)){
+    printf("ESTOY FRENTE A LA BODEGA\n");
       turnos[3]++;
       distancia++;
   }
   // aca termina el proceso y se escirbe el archi 
   // CACHAR como escribir el Nombre de)l repartidor con su identificador del o al numero de envios
+  //printf("distancia: %i: bodega: %i\n", distancia, distancia_bodega);
   else if(distancia==(distancia_bodega)){
+    printf("---------------REPARTIDOR LLEGUE BODEGA-----------\n");
     char repa[100];
     sprintf(repa, "repartidor_%i.txt", id_repartidor);
+    //Aqui se crea el archivo
     output_file(turnos[0], turnos[1], turnos[2], turnos[3], repa);
+    printf("LOS TURNOS FINALES SON: %i; %i;%i;%i\n", turnos[0], turnos[1], turnos[2], turnos[3]);
     printf("---------------------vamos a terminar el proceso -----------------\n");
-    if(envios_completados-1==id_repartidor){
-    kill(getppid(), SIGINT);
+    printf("---------------------ID REPARTiDOR%i -----------------\n", id_repartidor);
+    printf("---------------------Envios necesarios%i -----------------\n", envios_necesarios);
+    if(envios_necesarios-1==id_repartidor){
+      kill(getppid(), SIGINT);
     }
     ///TERMINAR EL PROCESO
 
     
   }
 
-  else{
-    if (distancia<(distancia_semaforo_1)){
-      distancia++;
-      turnos[0]++;
-      turnos[1]++;
-      turnos[2]++;
-      turnos[3]++;
-    }
-    else if (distancia<(distancia_semaforo_2-1)){
-      turnos[1]++;
-      turnos[2]++;
-      turnos[3]++;
-      distancia++;
-    }
-    else if (distancia<(distancia_semaforo_3-1)){
-      turnos[2]++;
-      turnos[3]++;
-      distancia++; 
-    }
-    else if (distancia<(distancia_bodega)){
-      turnos[3]++;
-      distancia++;
-    }
+  else if(distancia<(distancia_semaforo_1-1)){
+    printf("AVANZO");
+    turnos[1]++;
+    turnos[2]++;
+    turnos[3]++;
+    distancia++;
   }
-  printf("%i----------------------------\n", distancia);
-  printf("##################Ternmino##################\n");
+  else if (distancia<(distancia_semaforo_3-1)){
+    printf("AVANZO");
+    turnos[2]++;
+    turnos[3]++;
+    distancia++; 
+  }
+  else if (distancia<(distancia_bodega)){
+    printf("AVANZO");
+    turnos[3]++;
+    distancia++;
+  }
+  printf("ID repartidos: %i ---- Distancia%i----------------------------\n", getpid(),distancia);
+  printf("##################TERMINO LA FUNCION AVANZA REPARTIDOR##################\n");
   alarm(velocidad);
 }
 
@@ -177,7 +187,7 @@ int main(int argc, char const *argv[])
   id_repartidor = atoi(argv[6]);
   envios_necesarios = atoi(argv[7]);
   printf("*****************************\n");
-  printf("LLEGOOO BIEN distancia 1: %i\n", distancia_semaforo_1);
+  printf("LLEGOOO BIEN distancia: %s, %s, %s, %s,%s, %s, %s\n", argv[1], argv[2], argv[3], argv[4], argv[5], argv[6], argv[7]);
   
   printf("*************nacio un repartidor %i   %s****************\n", getpid(), argv[5]);
   //printf("LLEGOOO str 1: %s", argv[4]);

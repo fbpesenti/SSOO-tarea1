@@ -17,7 +17,6 @@
 // }
 int id_repartidor;
 int id_semaforo1;
-int contador_repartidor = 0;
 int id_semaforo2;
 int id_semaforo3;
 int id_main;
@@ -30,17 +29,17 @@ int global = 0;
 void hander_test(int sig, siginfo_t *siginfo, void *ucontext){
   printf("ENTRO a handler test//\n");
   int valor_recibido = siginfo-> si_value.sival_int;
-  printf("Recibi %i\n", valor_recibido);
-  printf("aca debe estar sender: %i\n", siginfo->si_pid);
-  printf("se manda a este repartidor id: %i\n", id_repartidor);
+  //printf("Recibi %i\n", valor_recibido);
+  // printf("aca debe estar sender: %i\n", siginfo->si_pid);
+  // printf("se manda a este repartidor id: %i\n", id_repartidor);
   int id_proceso_semaforo = siginfo->si_pid;
-  printf("$$$$############# %i --------------------\n", id_semaforo1);
+  // printf("$$$$############# %i --------------------\n", id_semaforo1);
   send_signal_with_int(id_repartidor, valor_recibido);
 }
 
 void handle_sigint_fabrica(int signum){
   if (global==0){
-    printf("LLEGOOOOOOOOOOO!!!!!!!!!!!!!!!!! mando a main \n");
+    printf("LLEGO a handler sigint fabrica \n");
     kill(getppid(), SIGINT);
     global = 1;
   }
@@ -53,7 +52,8 @@ void handle_sigint_fabrica(int signum){
 
 
 void handle_sigint_main(int signum){
-  printf("LLEGOOOOOOOOOOO!!!!!!!!!!!!!!!!! mando sig a id_fabrica_original %i id semaforos %i %i %i \n", id_fabrica_original, id_semaforo1, id_semaforo2, id_semaforo3);
+  printf("LLEGO a sigint main\n");
+  // a id_fabrica_original %i  d semaforos %i %i %i \n", id_fabrica_original, id_semaforo1, id_semaforo2, id_semaforo3);
   kill(id_semaforo1, SIGABRT);
   kill(id_semaforo2, SIGABRT);
   kill(id_semaforo3, SIGABRT);
@@ -63,10 +63,11 @@ void handle_sigint_main(int signum){
 
 void sigabr_handler_fabrica(int signum){ 
   printf("fabrica: Mira recibi SIGABRT\n");
-  printf("array_id_repartidores %i %i %i \n", array_prueba[0], array_prueba[1], array_prueba[2]);
+  //printf("array_id_repartidores %i %i %i \n", array_prueba[0], array_prueba[1], array_prueba[2]);
   for (int j = 0; j < envios_necesarios; j++){
-    printf("se mandara senal a el proceso %i con j = %i\n", array_prueba[j], j);
+    //printf("se mandara senal a el proceso %i con j = %i\n", array_prueba[j], j);
     if (array_prueba[j] != 0){
+      printf("FABRICA: matando repartidor\n");
       kill(array_prueba[j], SIGABRT);
     }
   }
@@ -178,6 +179,7 @@ int main(int argc, char const *argv[])
       //;
       //ACA SE CREAN LOS REPARTIDORES
       int array_id_repartidores[envios_completados];
+      int contador_repartidor = 0;
       while (envios_completados < envios_necesarios){
         //int id_repartidor;
         printf("FABRICA: creare un repartidor.. \n");
@@ -192,21 +194,24 @@ int main(int argc, char const *argv[])
         array_prueba[envios_completados] = id_repartidor_original;
         envios_completados = envios_completados + 1;
         if (id_repartidor == 0){
+          printf("NUMERO DE REPARTIDORES CREADOS: %i", contador_repartidor);
           char str1[10];
           sprintf(str1, "%d",id_main);          
           printf(" id_main %i %s\n", id_main, str1);
           char str2[10];
           sprintf(str2, "%d",contador_repartidor);  
           char str3[10];
-          sprintf(str2, "%d",envios_necesarios);      
-          printf("Ahora voy a cnectar al repartidor\n");
-          char *argv[] = {"repartidor", distancia[0], distancia[1], distancia[2], distancia[3], str1, str2,str3,  NULL};
+          sprintf(str3, "%d",envios_necesarios);      
+          //printf("Ahora voy a conectar al repartidor\n");
+          char *argv[] = {"repartidor", distancia[0], distancia[1], distancia[2], distancia[3], str1, str2, str3,  NULL};
           execv("./repartidor", argv);
           //printf("REPARTIDOR: Hola naci PID: %i\n", getpid());
-          contador_repartidor++;
-        }      
+          
+        }   
+
+        contador_repartidor++;
       }
-      printf(" array de repartidores --> %i %i %i \n", array_id_repartidores[0], array_id_repartidores[1], array_id_repartidores[2]);
+      //printf(" array de repartidores --> %i %i %i \n", array_id_repartidores[0], array_id_repartidores[1], array_id_repartidores[2]);
       while (true)
       ;
     };
