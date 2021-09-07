@@ -17,15 +17,26 @@ int distancia_semaforo_2;
 int distancia_semaforo_3;
 int distancia_bodega;
 int envios_completos;
+int id_main_send;
+
+
+
+void sigabrt_handler_repart(int signum){ 
+  printf("REPARTIDORa: Mira recibi SIGABRT\n");
+  printf("muere repartidor\n");
+  kill(getpid(), SIGINT);
+  printf("muere2\n");
+
+}
 
 void handler_states(int sig, siginfo_t *siginfo, void *ucontext){
-  printf("REPARTIDR: recibe info\n");
+ // printf("REPARTIDR: recibe info\n");
   int valor_recibido = siginfo-> si_value.sival_int;
-  printf("REPARTIDR: Recibi %i\n", valor_recibido);
-  printf("REPARTIDR: aca debe estar sender (semaforo): %i\n", siginfo->si_pid);
+  //printf("REPARTIDR: Recibi %i\n", valor_recibido);
+  //printf("REPARTIDR: aca debe estar sender (semaforo): %i\n", siginfo->si_pid);
   //send_signal_with_int(id_fabrica, valor_recibido);
   //####hardcore
-  printf("valor recibido %i\n", valor_recibido);
+ // printf("valor recibido %i\n", valor_recibido);
   if (valor_recibido == 1){
     printf("---------llego un semaforo 1 al repartidor -----------------\n");
     if (estado_semaforo[0] == 0){
@@ -57,7 +68,7 @@ void handler_states(int sig, siginfo_t *siginfo, void *ucontext){
     printf("array estados :{ %i %i %i}\n", estado_semaforo[0], estado_semaforo[1], estado_semaforo[2]);
   }
   printf("---------------------vamos a terminar el proceso -----------------\n");
-
+  kill(getppid(), SIGINT);
 
 }
 
@@ -68,7 +79,7 @@ void output_file(int tiempo_semaforo1, int tiempo_semaforo2,int tiempo_semaforo3
   fclose(output_file);
 }
 void repartidor_avanza(int signum){
-  printf("*********");
+  printf("********\n");
   printf("REPARTIDR: LLeguo la alarma repartidor_avanzar");
   if(distancia==(distancia_semaforo_1)){
     if(estado_semaforo[0]==0){
@@ -152,10 +163,10 @@ void repartidor_avanza(int signum){
 int main(int argc, char const *argv[])
 {
   
-  printf("*************nacio un repartidor %i****************\n", getpid());
-  printf("LLEGOOO str 1: %s", argv[4]);
+  printf("*************nacio un repartidor %i   %s****************\n", getpid(), argv[4]);
+  //printf("LLEGOOO str 1: %s", argv[4]);
   connect_sigaction(SIGUSR1, handler_states);
-
+  signal(SIGABRT, sigabrt_handler_repart);
   signal(SIGALRM,repartidor_avanza);
 
 
