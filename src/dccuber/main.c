@@ -17,6 +17,7 @@
 // }
 int id_repartidor;
 int id_semaforo1;
+int contador_repartidor = 0;
 
 void hander_test(int sig, siginfo_t *siginfo, void *ucontext){
   printf("ENTRO//\n");
@@ -138,12 +139,14 @@ int main(int argc, char const *argv[])
         array_id_repartidores[envios_completados] = id_repartidor;
         if (id_repartidor == 0){
           char str1[10];
-          sprintf(str1, "%d",id_semaforo1);          
+          sprintf(str1, "%d",id_semaforo1); 
+          char str2[10];
+          sprintf(str2, "%d",contador_repartidor);      
           printf("Ahora voy a cnectar al repartidor\n");
-          char *argv[] = {"repartidor", distancia[0], distancia[1], distancia[2], distancia[3], str1, NULL};
+          char *argv[] = {"repartidor", distancia[0], distancia[1], distancia[2], distancia[3], str1, str2, NULL};
           execv("./repartidor", argv);
           //printf("REPARTIDOR: Hola naci PID: %i\n", getpid());
-          
+          contador_repartidor++;
         }      
       }
       printf(" array de repartidores --> %i %i %i \n", array_id_repartidores[0], array_id_repartidores[1], array_id_repartidores[2]);

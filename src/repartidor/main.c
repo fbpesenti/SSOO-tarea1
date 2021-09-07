@@ -12,6 +12,7 @@ int id_semaforo2;
 int distancia = 0;
 int velocidad = 1;
 int senal;
+int id_repartidor;
 int distancia_semaforo_1;
 int distancia_semaforo_2;
 int distancia_semaforo_3;
@@ -117,9 +118,12 @@ void repartidor_avanza(int signum){
   // aca termina el proceso y se escirbe el archi 
   // CACHAR como escribir el Nombre de)l repartidor con su identificador del o al numero de envios
   else if(distancia==(distancia_bodega)){
-    //output_file(turnos[0], turnos[1], turnos[2], turnos[3], "repartidor_.txt");
-    printf("**************Se Termino llego a bodega*********************\n");
+    char repa[100];
+    sprintf(repa, "repartidor_%i.txt", id_repartidor);
+    output_file(turnos[0], turnos[1], turnos[2], turnos[3], repa);
     ///TERMINAR EL PROCESO
+
+    
   }
 
   else{
@@ -158,7 +162,7 @@ int main(int argc, char const *argv[])
   distancia_semaforo_2 = atoi(argv[2]);
   distancia_semaforo_3 = atoi(argv[3]);
   distancia_bodega = atoi(argv[4]);
-
+  id_repartidor = atoi(argv[6]);
   printf("*****************************\n");
   printf("LLEGOOO BIEN distancia 1: %i\n", distancia_semaforo_1);
   
