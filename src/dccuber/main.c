@@ -120,7 +120,7 @@ int main(int argc, char const *argv[])
       printf("MAIN: creare una fabrica..\n");
       printf("FABRICA: soy una fabrica PID: %i\n", getpid());
       //ACA SE RECIBE SEÑAL SEMAFORO
-      printf("Ahora voy a cnectar\n");
+      printf("Ahora voy a conectar\n");
       connect_sigaction(SIGUSR1, hander_test);
       //while (true)
       //;
@@ -140,7 +140,7 @@ int main(int argc, char const *argv[])
           // sprintf(str3, "%d",id_semaforo3);
 
           printf("Ahora voy a cnectar al repartidor\n");
-          char *argv[] = {"repartidor", distancia[0], distancia[1], distancia[2], NULL};
+          char *argv[] = {"repartidor", distancia[0], distancia[1], distancia[2], distancia[3], NULL};
           execv("./repartidor", argv);
           //printf("REPARTIDOR: Hola naci PID: %i\n", getpid());
           

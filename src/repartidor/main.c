@@ -48,17 +48,20 @@ void output_file(int tiempo_semaforo1, int tiempo_semaforo2,int tiempo_semaforo3
   fclose(output_file);
 }
 void repartidor_avanza(int signum){
-  printf("*********");
-  printf("LLegue a la alarma");
-  if(distancia==(distancia_semaforo_1)){
+  printf("*********\n");
+  printf("LLegue a la alarma\n");
+  if(distancia==(distancia_semaforo_1-1)){
     if(estado_semaforo[0]==0){
+      printf("**************Avanza*************\n");
       distancia++;
       turnos[0]++;
       turnos[1]++;
       turnos[2]++;
       turnos[3]++;
+      printf("------------DIstancia despues de pasar el semaforo: %i---------\n", distancia);
     }
     else{
+      printf("**************Se Frena*********************\n");
       turnos[0]++;
       turnos[1]++;
       turnos[2]++;
@@ -90,50 +93,64 @@ void repartidor_avanza(int signum){
     }
   }
   else if(distancia==(distancia_bodega-1)){
-    if(estado_semaforo[1]==0){
-      distancia++;
       turnos[3]++;
-    }
-    else{
-      turnos[3]++;
-    }
   }
   // aca termina el proceso y se escirbe el archi 
-  // CACHAR como escribir el Nombre del repartidor con su identificador del o al numero de envios
+  // CACHAR como escribir el Nombre de)l repartidor con su identificador del o al numero de envios
   else if(distancia==(distancia_bodega)){
     output_file(turnos[0], turnos[1], turnos[2], turnos[3], "repartidor_.txt");
     ///TERMINAR EL PROCESO
+    
   }
+
   else{
-    distancia++;
-    if (distancia<(distancia_semaforo_1-1)){
+    printf("###########Llegue al Else#######\n");
+    printf("-----------------Distancia: %i----------------------------\n", distancia);
+    if (distancia<(distancia_semaforo_1)){
+      printf("**************Avanza*************");
+      distancia++;
       turnos[0]++;
       turnos[1]++;
       turnos[2]++;
       turnos[3]++;
+      printf("-----------------Distancia despues de avanzar: %i----------------------------\n", distancia);
     }
     else if (distancia<(distancia_semaforo_2-1)){
+      printf("**************Avanza*************\n");
       turnos[1]++;
       turnos[2]++;
       turnos[3]++;
+      distancia++;
     }
     else if (distancia<(distancia_semaforo_3-1)){
+      printf("**************Avanza*************\n");
       turnos[2]++;
       turnos[3]++;
+      distancia++; 
+      printf("-----------------Distancia despues de avanzar: %i----------------------------\n", distancia);
     }
     else if (distancia<(distancia_bodega)){
+      printf("**************Avanza*************\n");
       turnos[3]++;
+      distancia++;
+      printf("-----------------Distancia despues de avanzar: %i----------------------------\n", distancia);
     }
   }
-
+  printf("##################Ternmino##################\n");
+  alarm(velocidad);
 }
 
 // debo recibir distancias 
 int main(int argc, char const *argv[])
 {
+  distancia_semaforo_1 = atoi(argv[1]);
+  distancia_semaforo_2 = atoi(argv[2]);
+  distancia_semaforo_3 = atoi(argv[3]);
+  distancia_bodega = atoi(argv[4]);
+
+  printf("*****************************\n");
+  printf("LLEGOOO BIEN distancia 1: %i\n", distancia_semaforo_1);
   
-  printf("*****************************");
-  printf("LLEGOOO BIEN distancia 1: %s", argv[1]);
   connect_sigaction(SIGUSR1, handler_states);
 
   signal(SIGALRM,repartidor_avanza);
