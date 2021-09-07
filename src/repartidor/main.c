@@ -26,7 +26,6 @@ void sigabrt_handler_repart(int signum){
   printf("muere repartidor\n");
   kill(getpid(), SIGINT);
   printf("muere2\n");
-
 }
 
 void handler_states(int sig, siginfo_t *siginfo, void *ucontext){

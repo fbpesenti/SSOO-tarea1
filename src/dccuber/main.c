@@ -6,6 +6,7 @@
 #include <signal.h>
 #include "../file_manager/manager.h"
 #include <stdbool.h>
+#include<sys/wait.h>
 
 // void handle_sigint(int sig)
 // {
@@ -64,6 +65,14 @@ void handle_sigint_main(int signum){
   kill(id_semaforo2, SIGABRT);
   kill(id_semaforo3, SIGABRT);
   kill(id_fabrica_original, SIGABRT);
+  printf("esperando al semaforo 1 ..........................\n");
+  wait(NULL);
+  printf("esperando al semaforo 2 ..........................\n");
+  wait(NULL);
+  printf("esperando al semaforo 3 ..........................\n");
+  wait(NULL);
+  printf("esperando a fabrca orifina ..........................\n");
+  wait(NULL);
   exit(0);
 }
 
@@ -75,6 +84,7 @@ void sigabr_handler_fabrica(int signum){
     if (array_prueba[j] != 0){
       printf("FABRICA: matando repartidor\n");
       kill(array_prueba[j], SIGABRT);
+      wait(NULL);
     }
   }
   printf("muere fabrica\n");
@@ -191,6 +201,8 @@ int main(int argc, char const *argv[])
         printf("FABRICA: creare un repartidor.. \n");
         printf("me demoro %i segundos en crear un repartidor.....\n", tiempo_creacion);
         sleep(tiempo_creacion);  // Creo que deberia ser un alarm alarm(tiempo_creacion)
+        printf("eseperando 2@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2\n");
+        sleep(100000);
         //printf("envios completador: %i | envios necesarios: %i\n", envios_completados, envios_necesarios);
         
         //printf("envios completados %i$$$$$$$$$$$$$$$$$$$$$$$$$$$$ffffffffffffffffffffffffffffffffffffffff$$4kk\n", envios_completados );
