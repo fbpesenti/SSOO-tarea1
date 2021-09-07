@@ -24,6 +24,21 @@ void handler_states(int sig, siginfo_t *siginfo, void *ucontext){
   printf("Recibi %i\n", valor_recibido);
   printf("aca debe estar sender: %i\n", siginfo->si_pid);
   //send_signal_with_int(id_fabrica, valor_recibido);
+  //####hardcore
+  id_semaforo1 = siginfo->si_pid;
+  if (siginfo->si_pid == id_semaforo1){
+    printf("---------llego un semaforo al repartidor -----------------\n");
+    if (estado_semaforo[1] == 0){
+      printf("---------estaba en 0 cambio a 1 -----------------\n");
+      estado_semaforo[1] = 1;
+    }
+    else if (estado_semaforo[1] == 1){
+      printf("---------estaba en 1 cambio a 0 -----------------\n");
+      estado_semaforo[1] = 0;     
+    }
+    printf("array estados :{ %i %i %i}\n", estado_semaforo[1], estado_semaforo[2], estado_semaforo[3]);
+    
+  }
 }
 
 //Esta funcion crea el output para el repartidor
