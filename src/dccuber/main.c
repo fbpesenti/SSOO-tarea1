@@ -16,6 +16,7 @@
 //   exit(0);
 // }
 int id_repartidor;
+int id_semaforo1;
 
 void hander_test(int sig, siginfo_t *siginfo, void *ucontext){
   printf("ENTRO//\n");
@@ -24,7 +25,8 @@ void hander_test(int sig, siginfo_t *siginfo, void *ucontext){
   printf("aca debe estar sender: %i\n", siginfo->si_pid);
   printf("se manda a este repartidor id: %i\n", id_repartidor);
   int id_proceso_semaforo = siginfo->si_pid;
-  send_signal_with_int(id_repartidor, id_proceso_semaforo);
+  printf("$$$$############# %i --------------------\n", id_semaforo1);
+  send_signal_with_int(id_repartidor, valor_recibido);
 }
 
 int main(int argc, char const *argv[])
@@ -58,14 +60,13 @@ int main(int argc, char const *argv[])
   char *tiempo_1 = data_in->lines[1][2];
   char *tiempo_2 = data_in->lines[1][3];
   char *tiempo_3 = data_in->lines[1][4];
-  int envios_completados;
-  envios_completados = 0;
+  int envios_completados = 0;
  // printf("tiempo creacion %i\n", tiempo_creacion);
   //printf("\n");
   printf("MAIN  PID: %i\n", getpid());
 
   int id_semaforo3;
-  int id_semaforo1;
+  //int id_semaforo1;
   int id_semaforo2;
   int id_fabrica;
   int id_fabrica_original;
@@ -93,7 +94,7 @@ int main(int argc, char const *argv[])
          // printf("SEMAFORO3: soy un semaforo PID: %i\n", getpid());
           char str[10];
           sprintf(str, "%d",id_fabrica_original);
-          char *argv[] = {"semaforo", distancia[2], tiempo_3, str, NULL};
+          char *argv[] = {"semaforo", distancia[2], tiempo_3, str, "3", NULL};
           execv("./semaforo", argv);
          // printf("probando 123 \n");
         }
@@ -102,7 +103,7 @@ int main(int argc, char const *argv[])
        // printf("SEMAFORO2: soy un semaforo PID: %i\n", getpid());
         char str[10];
         sprintf(str, "%d",id_fabrica_original);
-        char *argv[] = {"semaforo", distancia[1], tiempo_2, str, NULL};
+        char *argv[] = {"semaforo", distancia[1], tiempo_2, str, "2", NULL};
         execv("./semaforo", argv);
        // printf("probando 123 \n");
       }
@@ -111,7 +112,7 @@ int main(int argc, char const *argv[])
      // printf("SEMAFORO1: soy un semaforo PID: %i\n", getpid());
       char str[10];
       sprintf(str, "%d",id_fabrica_original);
-      char *argv[] = {"semaforo", distancia[0], tiempo_1, str, NULL};
+      char *argv[] = {"semaforo", distancia[0], tiempo_1, str, "1", NULL};
       execv("./semaforo", argv);
      // printf("probando 123 \n");
     }
@@ -120,32 +121,35 @@ int main(int argc, char const *argv[])
       printf("MAIN: creare una fabrica..\n");
       printf("FABRICA: soy una fabrica PID: %i\n", getpid());
       //ACA SE RECIBE SEÑAL SEMAFORO
-      printf("Ahora voy a cnectar\n");
       connect_sigaction(SIGUSR1, hander_test);
       //while (true)
       //;
       //ACA SE CREAN LOS REPARTIDORES
       if (envios_completados < envios_necesarios){
         //int id_repartidor;
+        printf("FABRICA: creare un repartidor.. &&&&&&&&&&&&&&&&&&&&&&\n");
         printf("me demoro %i segundos en crear un repartidor.....\n", tiempo_creacion);
         sleep(tiempo_creacion);  // Creo que deberia ser un alarm alarm(tiempo_creacion)
-        printf("FABRICA: creare un repartidor..\n");
+        printf("envios completador: %i | envios necesarios: %i\n", envios_completados, envios_necesarios);
+        envios_completados = envios_completados + 1;
         id_repartidor = fork();
         if (id_repartidor == 0){
-          // char str1[10];
-          // sprintf(str1, "%d",id_semaforo1);
+          char str1[10];
+          sprintf(str1, "%d",id_semaforo1);
           // char str2[10];
           // sprintf(str2, "%d",id_semaforo2);
           // char str3[10];
           // sprintf(str3, "%d",id_semaforo3);
-
+          
           printf("Ahora voy a cnectar al repartidor\n");
-          char *argv[] = {"repartidor", distancia[0], distancia[1], distancia[2], NULL};
+          char *argv[] = {"repartidor", distancia[0], distancia[1], distancia[2], str1, NULL};
           execv("./repartidor", argv);
           //printf("REPARTIDOR: Hola naci PID: %i\n", getpid());
           
+          
         }      
       }
+      
       while (true)
       ;
     };

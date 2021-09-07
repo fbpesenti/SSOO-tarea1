@@ -19,15 +19,27 @@ int distancia_bodega;
 int envios_completos;
 
 void handler_states(int sig, siginfo_t *siginfo, void *ucontext){
-  printf("Repartidor recibe info\n");
+  printf("REPARTIDR: recibe info\n");
   int valor_recibido = siginfo-> si_value.sival_int;
-  printf("Recibi %i\n", valor_recibido);
-  printf("aca debe estar sender: %i\n", siginfo->si_pid);
+  printf("REPARTIDR: Recibi %i\n", valor_recibido);
+  printf("REPARTIDR: aca debe estar sender (semaforo): %i\n", siginfo->si_pid);
   //send_signal_with_int(id_fabrica, valor_recibido);
   //####hardcore
-  id_semaforo1 = siginfo->si_pid;
-  if (siginfo->si_pid == id_semaforo1){
-    printf("---------llego un semaforo al repartidor -----------------\n");
+  printf("valor recibido %i\n", valor_recibido);
+  if (valor_recibido == 1){
+    printf("---------llego un semaforo 1 al repartidor -----------------\n");
+    if (estado_semaforo[0] == 0){
+      printf("---------estaba en 0 cambio a 1 -----------------\n");
+      estado_semaforo[0] = 1;
+    }
+    else if (estado_semaforo[0] == 1){
+      printf("---------estaba en 1 cambio a 0 -----------------\n");
+      estado_semaforo[0] = 0;     
+    }
+    printf("array estados :{ %i %i %i}\n", estado_semaforo[0], estado_semaforo[1], estado_semaforo[2]);
+  }
+  if (valor_recibido == 2){
+    printf("---------llego un semaforo 2 al repartidor -----------------\n");
     if (estado_semaforo[1] == 0){
       printf("---------estaba en 0 cambio a 1 -----------------\n");
       estado_semaforo[1] = 1;
@@ -36,9 +48,21 @@ void handler_states(int sig, siginfo_t *siginfo, void *ucontext){
       printf("---------estaba en 1 cambio a 0 -----------------\n");
       estado_semaforo[1] = 0;     
     }
-    printf("array estados :{ %i %i %i}\n", estado_semaforo[1], estado_semaforo[2], estado_semaforo[3]);
-    
+    printf("array estados :{ %i %i %i}\n", estado_semaforo[0], estado_semaforo[1], estado_semaforo[2]);
   }
+  if (valor_recibido == 3){
+    printf("---------llego un semaforo 3 al repartidor -----------------\n");
+    if (estado_semaforo[2] == 0){
+      printf("---------estaba en 0 cambio a 1 -----------------\n");
+      estado_semaforo[2] = 1;
+    }
+    else if (estado_semaforo[2] == 1){
+      printf("---------estaba en 1 cambio a 0 -----------------\n");
+      estado_semaforo[2] = 0;     
+    }
+    printf("array estados :{ %i %i %i}\n", estado_semaforo[0], estado_semaforo[1], estado_semaforo[2]);
+  }
+
 }
 
 //Esta funcion crea el output para el repartidor
@@ -49,7 +73,7 @@ void output_file(int tiempo_semaforo1, int tiempo_semaforo2,int tiempo_semaforo3
 }
 void repartidor_avanza(int signum){
   printf("*********");
-  printf("LLegue a la alarma");
+  printf("REPARTIDR: LLeguo la alarma repartidor_avanzar");
   if(distancia==(distancia_semaforo_1)){
     if(estado_semaforo[0]==0){
       distancia++;
@@ -132,8 +156,8 @@ void repartidor_avanza(int signum){
 int main(int argc, char const *argv[])
 {
   
-  printf("*****************************");
-  printf("LLEGOOO BIEN distancia 1: %s", argv[1]);
+  printf("*************nacio un repartidor****************\n");
+  printf("LLEGOOO str 1: %s", argv[4]);
   connect_sigaction(SIGUSR1, handler_states);
 
   signal(SIGALRM,repartidor_avanza);
