@@ -23,7 +23,8 @@ void hander_test(int sig, siginfo_t *siginfo, void *ucontext){
   printf("Recibi %i\n", valor_recibido);
   printf("aca debe estar sender: %i\n", siginfo->si_pid);
   printf("se manda a este repartidor id: %i\n", id_repartidor);
-  send_signal_with_int(id_repartidor, siginfo->si_pid);
+  int id_proceso_semaforo = siginfo->si_pid;
+  send_signal_with_int(id_repartidor, id_proceso_semaforo);
 }
 
 int main(int argc, char const *argv[])
@@ -59,8 +60,8 @@ int main(int argc, char const *argv[])
   char *tiempo_3 = data_in->lines[1][4];
   int envios_completados;
   envios_completados = 0;
-  printf("tiempo creacion %i\n", tiempo_creacion);
-  printf("\n");
+ // printf("tiempo creacion %i\n", tiempo_creacion);
+  //printf("\n");
   printf("MAIN  PID: %i\n", getpid());
 
   int id_semaforo3;
@@ -69,16 +70,17 @@ int main(int argc, char const *argv[])
   int id_fabrica;
   int id_fabrica_original;
   // int a = 0;
-  printf("MAIN: creare una fabrica..\n");
+  
   id_fabrica = fork();//crear FABRICA
   id_fabrica_original = id_fabrica;
   if (id_fabrica > 0){ //proceso padre
     //crear semafoortos
     
-    printf("MAIN: creare un semaforo..\n");
+
     id_semaforo1 = fork(); //SEMAFORO 1
 
     if (id_semaforo1 >0){ //proceso main
+      printf("MAIN: creare un semaforo..\n");
       id_semaforo2 = fork(); //SEMAFORO 2
 
       if (id_semaforo2 >0){//proceso padre
@@ -88,33 +90,34 @@ int main(int argc, char const *argv[])
           //creo los 3 semaforos
         }
         if (id_semaforo3 == 0){
-          printf("SEMAFORO3: soy un semaforo PID: %i\n", getpid());
+         // printf("SEMAFORO3: soy un semaforo PID: %i\n", getpid());
           char str[10];
           sprintf(str, "%d",id_fabrica_original);
           char *argv[] = {"semaforo", distancia[2], tiempo_3, str, NULL};
           execv("./semaforo", argv);
-          printf("probando 123 \n");
+         // printf("probando 123 \n");
         }
       }
       if (id_semaforo2 == 0){
-        printf("SEMAFORO2: soy un semaforo PID: %i\n", getpid());
+       // printf("SEMAFORO2: soy un semaforo PID: %i\n", getpid());
         char str[10];
         sprintf(str, "%d",id_fabrica_original);
         char *argv[] = {"semaforo", distancia[1], tiempo_2, str, NULL};
         execv("./semaforo", argv);
-        printf("probando 123 \n");
+       // printf("probando 123 \n");
       }
     } 
     if (id_semaforo1 == 0){
-      printf("SEMAFORO1: soy un semaforo PID: %i\n", getpid());
+     // printf("SEMAFORO1: soy un semaforo PID: %i\n", getpid());
       char str[10];
       sprintf(str, "%d",id_fabrica_original);
       char *argv[] = {"semaforo", distancia[0], tiempo_1, str, NULL};
       execv("./semaforo", argv);
-      printf("probando 123 \n");
+     // printf("probando 123 \n");
     }
   }
   if (id_fabrica == 0){ ///proceso hijo FABRICA
+      printf("MAIN: creare una fabrica..\n");
       printf("FABRICA: soy una fabrica PID: %i\n", getpid());
       //ACA SE RECIBE SEÑAL SEMAFORO
       printf("Ahora voy a cnectar\n");
@@ -126,6 +129,7 @@ int main(int argc, char const *argv[])
         //int id_repartidor;
         printf("me demoro %i segundos en crear un repartidor.....\n", tiempo_creacion);
         sleep(tiempo_creacion);  // Creo que deberia ser un alarm alarm(tiempo_creacion)
+        printf("FABRICA: creare un repartidor..\n");
         id_repartidor = fork();
         if (id_repartidor == 0){
           // char str1[10];
@@ -136,9 +140,10 @@ int main(int argc, char const *argv[])
           // sprintf(str3, "%d",id_semaforo3);
 
           printf("Ahora voy a cnectar al repartidor\n");
-          char *argv[] = {"repartidor",  distancia[0], distancia[1], distancia[2], distancia[3], distancia[4], NULL};
+          char *argv[] = {"repartidor", distancia[0], distancia[1], distancia[2], NULL};
           execv("./repartidor", argv);
-          printf("REPARTIDOR: Hola naci PID: %i\n", getpid());
+          //printf("REPARTIDOR: Hola naci PID: %i\n", getpid());
+          
         }      
       }
       while (true)

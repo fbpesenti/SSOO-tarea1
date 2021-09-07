@@ -38,9 +38,9 @@ void sig_handler(int signum){
 int main(int argc, char const *argv[])
 {
   printf("I'm the SEMAFORO process and my PID is: %i\n", getpid());
-  printf("distancia: %s en proceso %i\n", argv[1], getpid());
-  printf("delay: %s en proceso %i\n", argv[2], getpid());
-  printf("ID FABRICA: %s en proceso %i\n", argv[3], getpid());
+ // printf("distancia: %s en proceso %i\n", argv[1], getpid());
+  //printf("delay: %s en proceso %i\n", argv[2], getpid());
+  //printf("ID FABRICA: %s en proceso %i\n", argv[3], getpid());
   signal(SIGALRM,sig_handler); // Register signal handler
   int delay = atoi(argv[2]);
   id_proceso_actual = getpid();
