@@ -10,6 +10,7 @@ int delay_all;
 int estado = 0;
 int id_proceso_actual;
 int cambios_color = 0;
+int my_id;
 
 //Esta funcion crea el output para el semaforo
 void output_file(int cantidad_cambios, char* nombre_archivo){
@@ -20,9 +21,9 @@ void output_file(int cantidad_cambios, char* nombre_archivo){
 
 void sig_handler(int signum){
  
-  printf("CAMBIO COLOR en estado %i\n", estado);
-  printf("mando al proceso %i  desde proceso %i\n", id_proceso_fabrica, getpid());
-  send_signal_with_int(id_proceso_fabrica, estado);
+  printf("SEMAFORO: CAMBIE DE COLOR %i\n", estado);
+  printf("SEMAFORO: mando al proceso %i  desde proceso %i\n", id_proceso_fabrica, getpid());
+  send_signal_with_int(id_proceso_fabrica, my_id);
   cambios_color++;
   if (estado == 0){
     estado = 1;
@@ -43,10 +44,10 @@ int main(int argc, char const *argv[])
   //printf("ID FABRICA: %s en proceso %i\n", argv[3], getpid());
   signal(SIGALRM,sig_handler); // Register signal handler
   int delay = atoi(argv[2]);
+  my_id = atoi(argv[4]);
   id_proceso_actual = getpid();
 
   delay_all = delay;
-  printf("%i de dealy\n", delay);
   id_proceso_fabrica = atoi(argv[3]);
   
   alarm(delay); 
