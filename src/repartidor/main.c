@@ -29,11 +29,9 @@ void handler_states(int sig, siginfo_t *siginfo, void *ucontext){
   if (valor_recibido == 1){
     printf("---------llego un semaforo 1 al repartidor -----------------\n");
     if (estado_semaforo[0] == 0){
-      printf("---------estaba en 0 cambio a 1 -----------------\n");
       estado_semaforo[0] = 1;
     }
     else if (estado_semaforo[0] == 1){
-      printf("---------estaba en 1 cambio a 0 -----------------\n");
       estado_semaforo[0] = 0;     
     }
     printf("array estados :{ %i %i %i}\n", estado_semaforo[0], estado_semaforo[1], estado_semaforo[2]);
@@ -41,11 +39,9 @@ void handler_states(int sig, siginfo_t *siginfo, void *ucontext){
   if (valor_recibido == 2){
     printf("---------llego un semaforo 2 al repartidor -----------------\n");
     if (estado_semaforo[1] == 0){
-      printf("---------estaba en 0 cambio a 1 -----------------\n");
       estado_semaforo[1] = 1;
     }
     else if (estado_semaforo[1] == 1){
-      printf("---------estaba en 1 cambio a 0 -----------------\n");
       estado_semaforo[1] = 0;     
     }
     printf("array estados :{ %i %i %i}\n", estado_semaforo[0], estado_semaforo[1], estado_semaforo[2]);
@@ -53,15 +49,15 @@ void handler_states(int sig, siginfo_t *siginfo, void *ucontext){
   if (valor_recibido == 3){
     printf("---------llego un semaforo 3 al repartidor -----------------\n");
     if (estado_semaforo[2] == 0){
-      printf("---------estaba en 0 cambio a 1 -----------------\n");
       estado_semaforo[2] = 1;
     }
     else if (estado_semaforo[2] == 1){
-      printf("---------estaba en 1 cambio a 0 -----------------\n");
       estado_semaforo[2] = 0;     
     }
     printf("array estados :{ %i %i %i}\n", estado_semaforo[0], estado_semaforo[1], estado_semaforo[2]);
   }
+  printf("---------------------vamos a terminar el proceso -----------------\n");
+
 
 }
 
@@ -156,7 +152,7 @@ void repartidor_avanza(int signum){
 int main(int argc, char const *argv[])
 {
   
-  printf("*************nacio un repartidor****************\n");
+  printf("*************nacio un repartidor %i****************\n", getpid());
   printf("LLEGOOO str 1: %s", argv[4]);
   connect_sigaction(SIGUSR1, handler_states);
 

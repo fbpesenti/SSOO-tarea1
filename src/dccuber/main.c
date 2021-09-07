@@ -125,30 +125,26 @@ int main(int argc, char const *argv[])
       //while (true)
       //;
       //ACA SE CREAN LOS REPARTIDORES
-      if (envios_completados < envios_necesarios){
+      int array_id_repartidores[envios_completados];
+      while (envios_completados < envios_necesarios){
         //int id_repartidor;
         printf("FABRICA: creare un repartidor.. &&&&&&&&&&&&&&&&&&&&&&\n");
         printf("me demoro %i segundos en crear un repartidor.....\n", tiempo_creacion);
         sleep(tiempo_creacion);  // Creo que deberia ser un alarm alarm(tiempo_creacion)
-        printf("envios completador: %i | envios necesarios: %i\n", envios_completados, envios_necesarios);
+        //printf("envios completador: %i | envios necesarios: %i\n", envios_completados, envios_necesarios);
         envios_completados = envios_completados + 1;
+        //printf("envios completados %i$$$$$$$$$$$$$$$$$$$$$$$$$$$$ffffffffffffffffffffffffffffffffffffffff$$4kk\n", envios_completados );
         id_repartidor = fork();
+        array_id_repartidores[envios_completados] = id_repartidor;
         if (id_repartidor == 0){
           char str1[10];
-          sprintf(str1, "%d",id_semaforo1);
-          // char str2[10];
-          // sprintf(str2, "%d",id_semaforo2);
-          // char str3[10];
-          // sprintf(str3, "%d",id_semaforo3);
-          
+          sprintf(str1, "%d",id_semaforo1);          
           printf("Ahora voy a cnectar al repartidor\n");
           char *argv[] = {"repartidor", distancia[0], distancia[1], distancia[2], str1, NULL};
-          execv("./repartidor", argv);
-          //printf("REPARTIDOR: Hola naci PID: %i\n", getpid());
-          
-          
+          execv("./repartidor", argv);         
         }      
       }
+      printf(" array de repartidores --> %i %i %i \n", array_id_repartidores[0], array_id_repartidores[1], array_id_repartidores[2]);
       
       while (true)
       ;
