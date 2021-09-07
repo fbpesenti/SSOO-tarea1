@@ -38,76 +38,76 @@ void repartidor_avanza(int signum){
   if(distancia==(distancia_semaforo_1)){
     if(estado_semaforo[0]==0){
       distancia++;
-      turno[0]++;
-      turno[1]++;
-      turno[2]++;
-      turno[3]++;
+      turnos[0]++;
+      turnos[1]++;
+      turnos[2]++;
+      turnos[3]++;
     }
     else{
-      turno[0]++;
-      turno[1]++;
-      turno[2]++;
-      turno[3]++;
+      turnos[0]++;
+      turnos[1]++;
+      turnos[2]++;
+      turnos[3]++;
     }
   }
   else if(distancia==(distancia_semaforo_2-1)){
     if(estado_semaforo[1]==0){
       distancia++;
-      turno[1]++;
-      turno[2]++;
-      turno[3]++;
+      turnos[1]++;
+      turnos[2]++;
+      turnos[3]++;
     }
     else{
-      turno[1]++;
-      turno[2]++;
-      turno[3]++;
+      turnos[1]++;
+      turnos[2]++;
+      turnos[3]++;
     }
   }
   else if(distancia==(distancia_semaforo_3-1)){
     if(estado_semaforo[2]==0){
       distancia++;
-      turno[2]++;
-      turno[3]++;
+      turnos[2]++;
+      turnos[3]++;
     }
     else{
-      turno[2]++;
-      turno[3]++;
+      turnos[2]++;
+      turnos[3]++;
     }
   }
   else if(distancia==(distancia_bodega-1)){
     if(estado_semaforo[1]==0){
       distancia++;
-      turno[3]++;
+      turnos[3]++;
     }
     else{
-      turno[3]++;
+      turnos[3]++;
     }
   }
   // aca termina el proceso y se escirbe el archi 
   // CACHAR como escribir el Nombre del repartidor con su identificador del o al numero de envios
   else if(distancia==(distancia_bodega)){
-    output_file(turno[0], turno[1], turno[2], turno[3], "repartidor_.txt")
+    output_file(turnos[0], turnos[1], turnos[2], turnos[3], "repartidor_.txt");
     ///TERMINAR EL PROCESO
   }
   else{
     distancia++;
     if (distancia<(distancia_semaforo_1-1)){
-      turno[0]++;
-      turno[1]++;
-      turno[2]++;
-      turno[3]++;
+      turnos[0]++;
+      turnos[1]++;
+      turnos[2]++;
+      turnos[3]++;
     }
     else if (distancia<(distancia_semaforo_2-1)){
-      turno[1]++;
-      turno[2]++;
-      turno[3]++;
+      turnos[1]++;
+      turnos[2]++;
+      turnos[3]++;
     }
     else if (distancia<(distancia_semaforo_3-1)){
-      turno[2]++;
-      turno[3]++;
+      turnos[2]++;
+      turnos[3]++;
     }
     else if (distancia<(distancia_bodega)){
-      turno[3]++;
+      turnos[3]++;
     }
   }
 
